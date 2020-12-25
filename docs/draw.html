@@ -12,45 +12,31 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
 <link rel="manifest" href="/static/site.webmanifest">
 <body >
-
-<div class="w3-container">
-
-    <div class="w3-card-4 w3-container w3-third card w3-{{level}}">
-        <h2 class="w3-center">A</h3>
-        <ol class="w3-ol ">
-        {% for da in dataA %}
-            <li>{{da|upper}}</li>
-        {% endfor %}
-        </ol>
-    </div>  
-    
-    <div class="w3-card-4 w3-container w3-third card w3-{{level}}">
-        <h2 class="w3-center">B</h3>
-        <ol class="w3-ol">
-        {% for db in dataB %}
-            <li>{{db|upper}}</li>
-        {% endfor %}
-        </ol>
-    </div>  
-    
-    <div class="w3-card-4 w3-container w3-third card w3-{{level}}">
-        <h2 class="w3-center">C</h3>
-        <ol class="w3-ol">
-        {% for dc in dataC %}
-            <li>{{dc|upper}}</li>
-        {% endfor %}
-        </ol>
-    </div> 
-</div> 
+    <div class="w3-container" id="card-container"></div> 
 </body>
 <footer class="footer w3-black">
     <div class="w3-center w3-black">
         <h2>Ny Omgång:</h3>
-            <a class="w3-button w3-green" href="/rita/?seed={{seed}}&turn={{turn}}&level=green">GRÖNT</a>
-            <a class="w3-button w3-yellow" href="/rita/?seed={{seed}}&turn={{turn}}&level=yellow">GULT</a>
-            <a class="w3-button w3-orange" href="/rita/?seed={{seed}}&turn={{turn}}&level=orange">ORANGE</a>
-            <a class="w3-button w3-red" href="/rita/?seed={{seed}}&turn={{turn}}&level=red">RÖTT</a>
-        </div>
+        <div id="level_buttons"></div>
+    </div>
 </footer>
-<script src="/static/scripts.js" charset="utf-8"></script>
+<script type="text/javascript">
+    function get_param(urlParams, key, default_value) {
+        var value = urlParams.get(key);
+        return value !== null? value : default_value
+    }
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    var current_turn = get_param(urlParams, 'turn', 0);
+    var next_turn = 1 + current_turn;
+    var seed  = get_param(urlParams, 'seed', Math.round(Math.random() * 100000));
+
+    document.getElementById("level_buttons").innerHTML = 
+    '<a class="w3-button w3-green" href="/draw.html/?seed=' +  seed + '&turn=' + next_turn + '&level=green">GRÖNT</a>' +
+    '<a class="w3-button w3-yellow" href="/draw.html/?seed=' + seed + '&turn=' + next_turn + '&level=yellow">GULT</a>' +
+    '<a class="w3-button w3-orange" href="/draw.html/?seed=' + seed + '&turn=' + next_turn + '&level=orange">ORANGE</a>' +
+    '<a class="w3-button w3-red" href="/draw.html/?seed=' +    seed + '&turn=' + next_turn + '&level=red">RÖTT</a>';   
+ </script>
 </html>
