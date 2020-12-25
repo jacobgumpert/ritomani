@@ -30,7 +30,7 @@
     const urlParams = new URLSearchParams(queryString);
 
     var current_turn = get_param(urlParams, 'turn', 0);
-    var next_turn = 1 + current_turn;
+    var next_turn = 1 + parseInt(current_turn);
     var seed  = get_param(urlParams, 'seed', Math.round(Math.random() * 100000));
 
     document.getElementById("level_buttons").innerHTML = 
