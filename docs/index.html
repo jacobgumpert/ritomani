@@ -21,6 +21,15 @@
 </body>
 
 <footer>
-  <script src="/buttons-scripts.js" charset="utf-8"></script>
+
+  <script type="text/javascript">
+    var seed = Math.round(Math.random() * 100000);
+    document.getElementById("level_buttons").innerHTML=
+    '<a class="w3-button w3-green" href="/draw.html/?seed=' +  seed + '&turn=0&level=green">GRÖNT</a>' + 
+    '<a class="w3-button w3-yellow" href="/draw.html/?seed=' + seed + '&turn=0&level=yellow">GULT</a>' + 
+    '<a class="w3-button w3-orange" href="/draw.html/?seed=' + seed + '&turn=0&level=orange">ORANGE</a>' + 
+    '<a class="w3-button w3-red" href="/draw.html/?seed=' +    seed + '&turn=0&level=red">RÖTT</a>';
+    
+  </script>
  </footer>
 </html>
