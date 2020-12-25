@@ -34,9 +34,15 @@
     var seed  = get_param(urlParams, 'seed', Math.round(Math.random() * 100000));
 
     document.getElementById("level_buttons").innerHTML = 
-    '<a class="w3-button w3-green" href="/draw.html/?seed=' +  seed + '&turn=' + next_turn + '&level=green">GRÖNT</a>' +
-    '<a class="w3-button w3-yellow" href="/draw.html/?seed=' + seed + '&turn=' + next_turn + '&level=yellow">GULT</a>' +
-    '<a class="w3-button w3-orange" href="/draw.html/?seed=' + seed + '&turn=' + next_turn + '&level=orange">ORANGE</a>' +
-    '<a class="w3-button w3-red" href="/draw.html/?seed=' +    seed + '&turn=' + next_turn + '&level=red">RÖTT</a>';   
+    '<a class="w3-button w3-green" href="ritomani/draw?seed=' +  seed + '&turn=' + next_turn + '&level=green">GRÖNT</a>' +
+    '<a class="w3-button w3-yellow" href="ritomani/draw?seed=' + seed + '&turn=' + next_turn + '&level=yellow">GULT</a>' +
+    '<a class="w3-button w3-orange" href="ritomani/draw?seed=' + seed + '&turn=' + next_turn + '&level=orange">ORANGE</a>' +
+    '<a class="w3-button w3-red" href="ritomani/draw?seed=' +    seed + '&turn=' + next_turn + '&level=red">RÖTT</a>';   
+
+
+
+
+
+
  </script>
 </html>
