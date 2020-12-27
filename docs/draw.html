@@ -53,15 +53,15 @@ select option[value="red"] {
 
 
 .footer {
-    padding-bottom: 1em;
-    position: fixed;
+    padding: 1em;
+    /* position: fixed; */
    left: 0;
    bottom: 0;
    width: 100%;
 }
 
 .card li {
-    height: 11vh;
+    height: 10vh;
 }
 </style>
 
@@ -149,7 +149,7 @@ select option[value="red"] {
 
     var data = $.getJSON(url, function(data) {
         var nbrCards = data.feed.entry.length/7;
-        var resolved_seed = seed + Math.floor( turn / nbrCards / 3);
+        var resolved_seed = seed + Math.floor(turn / nbrCards / 3);
         var rand = mulberry32(resolved_seed);
 
         var deck = Array.from(Array(nbrCards).keys())
