@@ -62,8 +62,6 @@ select option[value="red"] {
 .card li {
     height: 11vh;
 }
-
-
 </style>
 
 
@@ -75,15 +73,17 @@ select option[value="red"] {
 
 <body >
     <div class="w3-container" id="card-container">
-        
-    </div> 
+    </div>
 </body>
+
 <footer class="footer w3-black">
     <div class="w3-center w3-black">
         <h2>Ny Omgång:</h3>
         <div id="level_buttons"></div>
     </div>
 </footer>
+
+
 <script type="text/javascript">
     function get_param(urlParams, key, default_value) {
         var value = urlParams.get(key);
@@ -93,17 +93,17 @@ select option[value="red"] {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
-    var current_turn = get_param(urlParams, 'turn', 0);
+    var turn = get_param(urlParams, 'turn', 0);
     var level = get_param(urlParams, 'level', 'green');
 
-    var next_turn = 1 + parseInt(current_turn);
+    var next_turn = 1 + parseInt(turn);
     var seed  = get_param(urlParams, 'seed', Math.round(Math.random() * 100000));
 
-    document.getElementById("level_buttons").innerHTML = 
+    document.getElementById("level_buttons").innerHTML =
     '<a class="w3-button w3-green" href="https://jacobgumpert.github.io/ritomani/draw?seed=' +  seed + '&turn=' + next_turn + '&level=green">GRÖNT</a>' +
     '<a class="w3-button w3-yellow" href="https://jacobgumpert.github.io/ritomani/draw?seed=' + seed + '&turn=' + next_turn + '&level=yellow">GULT</a>' +
     '<a class="w3-button w3-orange" href="https://jacobgumpert.github.io/ritomani/draw?seed=' + seed + '&turn=' + next_turn + '&level=orange">ORANGE</a>' +
-    '<a class="w3-button w3-red" href="https://jacobgumpert.github.io/ritomani/draw?seed=' +    seed + '&turn=' + next_turn + '&level=red">RÖTT</a>';   
+    '<a class="w3-button w3-red" href="https://jacobgumpert.github.io/ritomani/draw?seed=' +    seed + '&turn=' + next_turn + '&level=red">RÖTT</a>';
 
 
     function mulberry32(a) {
@@ -115,40 +115,54 @@ select option[value="red"] {
         }
     }
 
-    var rand = mulberry32(seed);
-    var state = 0;
-    for (var i = 0; i <= current_turn; i++) {
-        state = Math.floor(rand() * 1e6);
+
+    function add_card(title, index, entry){
+        var card_container = $('#card-container');
+
+        var start = index * 7;
+        var end = start + 7;
+        var card_list = '';
+        for (i = start; i < end; i++) {
+            card_list += '<li>' + entry[i].content.$t.toUpperCase() + '</li>'
+        }
+
+        var card = $('<div class="w3-card-4 w3-container w3-third card w3-' + level + '">' +
+            '<h2 class="w3-center">' +  title + '</h2>' +
+            '<ol class="w3-ol" id="ol-C">' +
+            card_list +
+            '</ol>' +
+        '</div>')
+        card_container.append(card)
     }
 
 
-    console.log("State:", state)
 
     var url = 'https://spreadsheets.google.com/feeds/cells/1ifIDkf4Mk3RTII5DG-QV5eI2xWva94lfCyLHAM-fSXg/2/public/full?alt=json';
     var data = $.getJSON(url, function(data) {
-
-        var card_container = $('#card-container');
-        var card_list = '';
         var nbrCards = data.feed.entry.length/7;
-        var start = (state % nbrCards) * 7;
-        var end = start + 7;
-        console.log("nbrCards", nbrCards);
-        console.log("start", start);
-        console.log("end", end);
+        var resolved_seed = seed + Math.floor( turn / nbrCards / 3);
+        var rand = mulberry32(resolved_seed);
 
-        for (i = start; i < end; i++) {
-            card_list += '<li>' + data.feed.entry[i].content.$t.toUpperCase() + '</li>'
-        } 
+        var deck = Array.from(Array(nbrCards).keys())
 
-        var card = $('<div class="w3-card-4 w3-container w3-third card w3-' + level + '">' +
-            '<h2 class="w3-center">A</h2>' + 
-            '<ol class="w3-ol" id="ol-C">' +
-            card_list + 
-            '</ol>' + 
-        '</div>')
-        card_container.append(card)
+        // shuffle the cards
+        for (let i = deck.length - 1; i > 0; i--) {
+            let j = Math.floor(rand() * i);
+            let temp = deck[i];
+            deck[i] = deck[j];
+            deck[j] = temp;
+        }
 
-    
+        for (let i = 0; i < (turn*3 % nbrCards); i ++) {
+            deck.pop()
+        }
+
+        add_card("A", deck.pop(), data.feed.entry)
+        add_card("B", deck.pop(), data.feed.entry)
+        add_card("C", deck.pop(), data.feed.entry)
+
+
+
 
         console.log(data);
     })
