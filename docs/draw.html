@@ -73,16 +73,17 @@ select option[value="red"] {
 
 
 <body >
-    <div class="w3-container" id="card-container">
+    <div class="w3-center" id="loading">
+        <img src="https://i.ibb.co/2YG1WTT/ritomani.png" alt="Ritomani">
     </div>
+    <div class="w3-container" id="card-container"></div>
 </body>
 
 <footer class="footer w3-black">
     <div class="w3-center w3-black">
         <h2>Ny Omgång:</h3>
         <div id="level_buttons"></div>
-        <a href="https://docs.google.com/document/d/e/2PACX-1vRWyIyVfKWjqYHH3Js3eh1EgrtGJZIh03rtI9uFLrRQhNBNt5H9BMcubcC1kALe2Eo6ptfrUtZuoCBt/pub"> Regler</a>
-
+        <a href="https://docs.google.com/document/d/e/2PACX-1vRWyIyVfKWjqYHH3Js3eh1EgrtGJZIh03rtI9uFLrRQhNBNt5H9BMcubcC1kALe2Eo6ptfrUtZuoCBt/pub">Regler</a>
     </div>
 </footer>
 
@@ -167,7 +168,7 @@ select option[value="red"] {
         for (let i = 0; i < (turn*3 % nbrCards); i ++) {
             deck.pop()
         }
-
+        $('#loading').remove();
         add_card("A", deck.pop(), data.feed.entry)
         add_card("B", deck.pop(), data.feed.entry)
         add_card("C", deck.pop(), data.feed.entry)
