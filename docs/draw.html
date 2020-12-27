@@ -137,7 +137,15 @@ select option[value="red"] {
 
 
 
-    var url = 'https://spreadsheets.google.com/feeds/cells/1ifIDkf4Mk3RTII5DG-QV5eI2xWva94lfCyLHAM-fSXg/2/public/full?alt=json';
+
+    var page = {
+        "green": 1,
+        "yellow": 2,
+        "orange": 3,
+        "red": 4
+    };
+    var url = 'https://spreadsheets.google.com/feeds/cells/1ifIDkf4Mk3RTII5DG-QV5eI2xWva94lfCyLHAM-fSXg/' + page[level] + '/public/full?alt=json';
+
     var data = $.getJSON(url, function(data) {
         var nbrCards = data.feed.entry.length/7;
         var resolved_seed = seed + Math.floor( turn / nbrCards / 3);
