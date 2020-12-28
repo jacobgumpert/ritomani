@@ -82,7 +82,20 @@ select option[value="red"] {
 <footer class="footer w3-black">
     <div class="w3-center w3-black">
         <h2>Ny Omgång:</h3>
-        <div id="level_buttons"></div>
+        <div id="level_buttons">
+            <a class="w3-button w3-green"   onclick="newCards('green')">
+                GRÖNT
+            </a>
+            <a class="w3-button w3-yellow"  onclick="newCards('yellow')">
+                GULT
+            </a>
+            <a class="w3-button w3-orange"  onclick="newCards('orange')">
+                ORANGE
+            </a>
+            <a class="w3-button w3-red"     onclick="newCards('red')">
+                RÖTT
+            </a>
+        </div>
         <a href="https://docs.google.com/document/d/e/2PACX-1vRWyIyVfKWjqYHH3Js3eh1EgrtGJZIh03rtI9uFLrRQhNBNt5H9BMcubcC1kALe2Eo6ptfrUtZuoCBt/pub">Regler</a>
     </div>
 </footer>
@@ -103,11 +116,11 @@ select option[value="red"] {
     var next_turn = 1 + parseInt(turn);
     var seed  = get_param(urlParams, 'seed', Math.round(Math.random() * 100000));
 
-    document.getElementById("level_buttons").innerHTML =
-    '<a class="w3-button w3-green" href="https://jacobgumpert.github.io/ritomani/draw?seed=' +  seed + '&turn=' + next_turn + '&level=green">GRÖNT</a>' +
-    '<a class="w3-button w3-yellow" href="https://jacobgumpert.github.io/ritomani/draw?seed=' + seed + '&turn=' + next_turn + '&level=yellow">GULT</a>' +
-    '<a class="w3-button w3-orange" href="https://jacobgumpert.github.io/ritomani/draw?seed=' + seed + '&turn=' + next_turn + '&level=orange">ORANGE</a>' +
-    '<a class="w3-button w3-red" href="https://jacobgumpert.github.io/ritomani/draw?seed=' +    seed + '&turn=' + next_turn + '&level=red">RÖTT</a>';
+    // document.getElementById("level_buttons").innerHTML =
+    // '<a class="w3-button w3-green" href="https://jacobgumpert.github.io/ritomani/draw?seed=' +  seed + '&turn=' + next_turn + '&level=green">GRÖNT</a>' +
+    // '<a class="w3-button w3-yellow" href="https://jacobgumpert.github.io/ritomani/draw?seed=' + seed + '&turn=' + next_turn + '&level=yellow">GULT</a>' +
+    // '<a class="w3-button w3-orange" href="https://jacobgumpert.github.io/ritomani/draw?seed=' + seed + '&turn=' + next_turn + '&level=orange">ORANGE</a>' +
+    // '<a class="w3-button w3-red" href="https://jacobgumpert.github.io/ritomani/draw?seed=' +    seed + '&turn=' + next_turn + '&level=red">RÖTT</a>';
 
 
     function mulberry32(a) {
@@ -118,7 +131,9 @@ select option[value="red"] {
         return ((t ^ t >>> 14) >>> 0) / 4294967296;
         }
     }
-
+    function newCards(level){
+        console.log("level", level)
+    }
 
     function add_card(title, index, entry){
         var card_container = $('#card-container');
@@ -139,9 +154,6 @@ select option[value="red"] {
         card_container.append(card)
     }
 
-
-
-
     var page = {
         "green": 1,
         "yellow": 2,
@@ -150,8 +162,9 @@ select option[value="red"] {
     };
     var url = 'https://spreadsheets.google.com/feeds/cells/1ifIDkf4Mk3RTII5DG-QV5eI2xWva94lfCyLHAM-fSXg/' + page[level] + '/public/full?alt=json';
 
-    var data = $.getJSON(url, function(data) {
-        var nbrCards = data.feed.entry.length/7;
+
+    function handle_data(data) {
+        var nbrCards = data.length/7;
         var resolved_seed = seed + Math.floor(turn / nbrCards / 3);
         var rand = mulberry32(resolved_seed);
 
@@ -169,14 +182,14 @@ select option[value="red"] {
             deck.pop()
         }
         $('#loading').remove();
-        add_card("A", deck.pop(), data.feed.entry)
-        add_card("B", deck.pop(), data.feed.entry)
-        add_card("C", deck.pop(), data.feed.entry)
-
-
-
-
-        console.log(data);
-    })
+        add_card("A", deck.pop(), data)
+        add_card("B", deck.pop(), data)
+        add_card("C", deck.pop(), data)
+    }
+    var glob_data = [];
+    $.getJSON(url, function(data) {
+        var deck_data = data.feed.entry;
+        handle_data(deck_data);
+    });
  </script>
 </html>
